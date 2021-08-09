@@ -1,0 +1,92 @@
+default_flags = "igh"
+# commented because no golang icon
+# icon_theme = "vscode"
+
+[skin]
+default = "none none"
+
+[special-paths]
+"*/go" = "hide"
+"*/.git" = "hide"
+"*/.idea" = "hide"
+"*/.vscode" = "hide"
+"*/.cache" = "hide"
+
+[[verbs]]
+name = "touch"
+shortcut = "tc"
+invocation = "touch {newfile}"
+external = "touch {directory}/{newfile}"
+leave_broot = false
+
+[[verbs]]
+invocation = "panel_left"
+key = "alt-H"
+internal = ":panel_left"
+
+[[verbs]]
+invocation = "panel_right"
+key = "alt-L"
+internal = ":panel_right"
+
+[[verbs]]
+invocation = "line_up"
+key = "alt-K"
+internal = ":line_up"
+
+[[verbs]]
+invocation = "line_down"
+key = "alt-J"
+internal = ":line_down"
+
+[[verbs]]
+invocation = "toggle_staging_area"
+key = "alt-E"
+internal = ":toggle_stage"
+
+[[verbs]]
+invocation = "up_tree"
+key = "alt-U"
+internal = ":up_tree"
+
+[[verbs]]
+invocation = "focus_parent"
+key = "alt-P"
+internal = ":parent"
+
+[[verbs]]
+invocation = "start_end_panel"
+key = "alt-A"
+internal = ":start_end_panel"
+
+[[verbs]]
+invocation = "quit"
+key = "alt-Q"
+internal = ":quit"
+
+[[verbs]]
+invocation = "close_panel_cancel"
+key = "alt-W"
+internal = ":close_panel_cancel"
+
+[[verbs]]
+invocation = "toggle_stage"
+key = "alt-G"
+internal = ":toggle_stage"
+
+[[verbs]]
+invocation = "total_search"
+key = "alt-S"
+internal = ":total_search"
+
+[[verbs]]
+invocation = "copy_path"
+key = "alt-C"
+external = "sh -c \"echo {file} | xclip -se c\""
+leave_broot = false
+
+[[verbs]]
+invocation = "select_last"
+key = "alt-B"
+internal = ":select_last"
+

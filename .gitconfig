@@ -1,0 +1,38 @@
+[user]
+    name = Timofey Safronov
+    email = tsafronov@ozon.ru
+[core]
+    quotepath = off
+    autocrlf = input
+    safecrlf = warn
+[alias]
+    ch = checkout
+    a = add
+    cm = commit
+    st = status
+    re = restore
+    br = branch
+    hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+    type = cat-file -t
+    dump = cat-file -p
+    dt = difftool --dir-diff
+    df = difftool
+    mt = mergetool
+    rb = rebase
+    mg = merge
+    ph = push
+    pl = pull
+[diff]
+    tool = meld
+[difftool]
+    prompt = false
+[mergetool]
+    prompt = false
+    keepBackup = false
+[merge]
+    tool = meld
+[url "ssh://git@github.com/"]
+    insteadOf = https://github.com/
+[url "ssh://git@gitlab.ozon.ru"]
+    insteadOf = https://gitlab.ozon.ru
+

@@ -1,0 +1,9 @@
+#! /bin/bash
+
+choice=$(wmctrl -l | rg '(^\w+) +(\d) \w+ (.*)' -r '$2 $3 $1' | fzf-dmenu --prompt "FOCUS ")
+
+if [ -n "$choice" ]; then
+    id=$(echo "$choice" | rg '\S+$' -o)
+    wmctrl -ia $id
+fi
+

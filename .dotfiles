@@ -1,0 +1,8 @@
+~/.bashrc
+~/.spectrwm.conf
+~/.config/qtile/config.py
+~/.config/kak/kakrc
+~/.config/broot/conf.toml
+~/.alacritty.yml
+~/.dotfiles
+~/.local/bin/baraction.sh

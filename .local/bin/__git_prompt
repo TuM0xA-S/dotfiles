@@ -1,0 +1,4 @@
+#! /bin/bash
+cd $1
+echo $(__git_ps1)
+

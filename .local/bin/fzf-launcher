@@ -1,0 +1,14 @@
+#! /bin/bash
+
+choice=$((
+    IFS=":"; for path in $PATH; do
+        cd "$path"
+        for prog in *; do
+            echo "$prog"
+        done
+    done
+) | sort -u | fzf-dmenu)
+
+if [ -n "$choice" ]; then
+    setsid -f $choice
+fi

@@ -1,0 +1,6 @@
+# set editing-mode vi
+# set show-all-if-ambiguous on
+# "\t": menu-complete
+# "\e[Z": menu-complete-backward
+# $include function rl_custom_complete /home/tum0xa/src/fzf-tab-completion/readline/target/release/librl_custom_complete.so
+# "\t": rl_custom_complete
