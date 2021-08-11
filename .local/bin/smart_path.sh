@@ -1,5 +1,8 @@
 #! /bin/bash
 path="$1"
+if [ -z "$path" ]; then
+    path="$(pwd)"
+fi
 len=61
 part=$((len / 2))
 sep="…"

@@ -116,24 +116,24 @@ define-command -override dp -docstring 'paste current directory' %{
     cd %sh{ cat $HOME/.wd }
 }
 
-define-command -override -docstring "vsplit [<commands>]: split tmux vertically" \
-vsplit -params .. -command-completion %{
-        tmux-terminal-horizontal "kak -c %val{session} -e ""%arg{@}"" && bash"
-}
+# define-command -override -docstring "vsplit [<commands>]: split tmux vertically" \
+# vsplit -params .. -command-completion %{
+#         tmux-terminal-horizontal "kak -c %val{session} -e ""%arg{@}"" && bash"
+# }
 
-define-command -override -docstring "split [<commands>]: split tmux horizontally" \
-split -params .. -command-completion %{
-        tmux-terminal-vertical "kak -c %val{session} -e ""%arg{@}"" && bash"
-}
+# define-command -override -docstring "split [<commands>]: split tmux horizontally" \
+# split -params .. -command-completion %{
+#         tmux-terminal-vertical "kak -c %val{session} -e ""%arg{@}"" && bash"
+# }
 
-define-command -override -docstring "tabnew [<commands>]: create new tmux window" \
-tabnew -params .. -command-completion %{
-        tmux-terminal-window "kak -c %val{session} -e ""%arg{@}"" && bash"
-}
+# define-command -override -docstring "tabnew [<commands>]: create new tmux window" \
+# tabnew -params .. -command-completion %{
+#         tmux-terminal-window "kak -c %val{session} -e ""%arg{@}"" && bash"
+# }
 
-map global user -docstring "vertical split" v ':vsplit '
-map global user -docstring "horizontal split" s ':split '
-
+# map global user -docstring "vertical split" v ':vsplit '
+# map global user -docstring "horizontal split" s ':split '
+map global user -docstring "split" s ':new<ret>'
 map global user -docstring "edit kakrc" k ':edit-kakrc<ret>'
 # map global user -docstring "edit bashrc" b ':edit ~/.bashrc<ret>'
 

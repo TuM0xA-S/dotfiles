@@ -169,7 +169,7 @@ case $- in *i*)
     bind -x '"\C-x\C-y":copyline'
 
     source $HOME/.fzf-bash-completion.sh
-    PROMPT_COMMAND="stty $(stty -g)"
+    PROMPT_COMMAND="echo -ne \"\033]0;$(basename $0) "'$(smart_path.sh)'"\007\"; stty $(stty -g)"
     bind -x '"\t": fzf_bash_completion'
 
     bind -x '"\e[15~": reload'
