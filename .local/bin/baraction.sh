@@ -1,5 +1,5 @@
 #!/bin/bash
 
 while true; do
-    conky
+    timeout -sKILL 60 conky
 done

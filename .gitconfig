@@ -5,11 +5,12 @@
     quotepath = off
     autocrlf = input
     safecrlf = warn
+	excludesFile = ~/.gitignore
 [alias]
     ch = checkout
     a = add
     cm = commit
-    st = status
+    st = status --short
     re = restore
     br = branch
     hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
@@ -22,6 +23,7 @@
     mg = merge
     ph = push
     pl = pull
+    cb = branch --show-current 
 [diff]
     tool = meld
 [difftool]

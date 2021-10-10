@@ -1,12 +1,17 @@
 source "%val{config}/plugins/plug.kak/rc/plug.kak"
 plug "andreyorst/plug.kak" noload
-plug "raiguard/one.kak" theme
 plug 'greenfork/active-window.kak' %{
     set-face global InactiveCursor default,rgb:4c4c4c
 }
 
 plug "occivink/kakoune-sudo-write"
-plug "kak-lsp/kak-lsp"
+plug "kak-lsp/kak-lsp" defer %{
+    set global lsp_completion_trigger ''
+}
+plug 'https://gitlab.com/kstr0k/fast-context.kak' demand fast-context %{
+    set-option global fast_context_max_width 120
+    map global user -docstring 'show context' c ': fast-context-show<ret>'
+} 
 
 define-command -override lsp-engage -docstring 'Enable language server' %{
     lsp-enable-window
@@ -33,10 +38,6 @@ hook global InsertCompletionShow .* %{
     }
 }
 
-# plug "lePerdu/kakboard" %{
-#     hook global WinCreate .* %{ kakboard-enable }
-# }
-
 set global tabstop 4
 set global indentwidth 4
 
@@ -44,6 +45,7 @@ hook global WinSetOption filetype=go %{ # if any window has filetype go set
     lsp-engage
     set window indentwidth 0
     set window formatcmd goimports # set formatcmd to goimports for that window
+    set window makecmd 'go build ./...'
     hook window BufWritePre .* %{ # and use it before write
         format
     }
@@ -58,6 +60,18 @@ hook global WinSetOption filetype=python %{
     }
 }
 
+hook global WinSetOption filetype=sql %{
+    enable-auto-indent
+}
+
+hook global WinSetOption filetype=protobuf %{
+    set window indentwidth 2
+}
+
+hook global WinSetOption filetype=makefile %{
+    set window indentwidth 0
+}
+
 hook global WinSetOption filetype=yaml %{
     set window indentwidth 2
 }
@@ -66,17 +80,11 @@ evaluate-commands %sh{
     kcr init kakoune
 }
 
-
-hook global ModuleLoaded tmux %{
-    alias global popup tmux-terminal-vertical
-}
-
-colorscheme one-dark
  
 add-highlighter -override global/ number-lines -hlcursor
-add-highlighter -override global/matching-brackets show-matching
+add-highlighter -override global/ show-matching
 # set -add global autoinfo normal
-set global ui_options ncurses_assistant=none
+set global ui_options terminal_assistant=none
 set global scrolloff 2,2
 set global autoreload true
 
@@ -116,23 +124,6 @@ define-command -override dp -docstring 'paste current directory' %{
     cd %sh{ cat $HOME/.wd }
 }
 
-# define-command -override -docstring "vsplit [<commands>]: split tmux vertically" \
-# vsplit -params .. -command-completion %{
-#         tmux-terminal-horizontal "kak -c %val{session} -e ""%arg{@}"" && bash"
-# }
-
-# define-command -override -docstring "split [<commands>]: split tmux horizontally" \
-# split -params .. -command-completion %{
-#         tmux-terminal-vertical "kak -c %val{session} -e ""%arg{@}"" && bash"
-# }
-
-# define-command -override -docstring "tabnew [<commands>]: create new tmux window" \
-# tabnew -params .. -command-completion %{
-#         tmux-terminal-window "kak -c %val{session} -e ""%arg{@}"" && bash"
-# }
-
-# map global user -docstring "vertical split" v ':vsplit '
-# map global user -docstring "horizontal split" s ':split '
 map global user -docstring "split" s ':new<ret>'
 map global user -docstring "edit kakrc" k ':edit-kakrc<ret>'
 # map global user -docstring "edit bashrc" b ':edit ~/.bashrc<ret>'
@@ -187,20 +178,28 @@ diff-tool-file %{
 
 alias global df diff-tool-file
 
-define-command -override -docstring "go build ./..." \
-go-build %{
-    e -scratch '*build*'
-    exec '%d'
-    exec '!go build ./... 2>&1<ret>'
-    ft grep
-    exec 'gk'
-    try %{
-        exec '<a-K>^$<ret>'
-    } catch %{
-        db '*build*'
-        echo "build OK"
-    }
-}
+define-command -override -docstring %{
+    go build ./...
+} go-build %{ evaluate-commands %sh{
+     output=$(mktemp -d "${TMPDIR:-/tmp}"/kak-go-build.XXXXXXXX)/fifo
+     mkfifo ${output}
+     ( go build ./... 2>&1 | tr -d '\r' > ${output} 2>&1 & ) > /dev/null 2>&1 < /dev/null
+
+     printf %s\\n "evaluate-commands -try-client '$kak_opt_toolsclient' %{
+               edit! -fifo ${output} *build*
+               set-option buffer filetype grep
+               set-option buffer grep_current_line 0
+               hook -always -once buffer BufCloseFifo .* %{
+                   try %{
+                       exec '<a-K>^$<ret>'
+                       eval -client '$kak_client' %{ echo -markup '{Error}build failed' }
+                   } catch %{
+                       eval -client '$kak_client' %{ echo 'build ok' }
+                       db '*build*' 
+                   }
+                   nop %sh{ rm -r $(dirname ${output}) }
+           }}"
+}}
 
 alias global gb go-build
 
@@ -223,3 +222,43 @@ alias global gt go-test
 
 map global normal @ q
 map global normal <a-@> Q
+
+define-command -override -docstring 'open history buffer' \
+hist %{
+    e! -scratch '*hist*'
+    exec '":<a-P>a<ret><esc><a-k>^(hist)?$\n<ret>d<space>dx'
+}
+
+map global normal <c-w> ":db<ret>"
+
+set-option global files_show_hidden true
+# set-option global files_long_format true
+
+plug "raiguard/one.kak" theme defer %{
+    # one-enable-fancy-underlines
+}
+colorscheme one-dark
+
+hook global BufSetOption "filetype=%opt{files_browse_buffer}" %{
+    map buffer normal '<ret>' ': files-cd<ret>'
+    map buffer normal '<backspace>' ': files-cd-parent<ret>'
+    map buffer normal 'm' ": files-add-entry-to-selection<ret>"
+    map buffer normal 'M' ": files-add-cwd-to-selection<ret>"
+    map buffer normal '.' ": files-toggle-show_hidden<ret>"
+    map buffer normal '\' ": files-toggle-long_format<ret>"
+    map buffer normal 'r' ": files-redraw-browser<ret>"
+    map buffer normal 'S' ": files-focus-selections<ret>"
+    map buffer normal 't' ": files-open-in-terminal<ret>"
+}
+
+hook global BufSetOption "filetype=%opt{files_selection_buffer}" %{
+    map buffer normal <ret> ': files-commit-operations<ret>'
+}
+
+# define-command -override connect-terminal %{
+#     nop %sh{
+#         export KAK_CLIENT="$kak_client"
+#         export KAK_SESSION="$kak_session"
+#         setsid -f alacritty --working-directory $(pwd)
+#     }
+# }

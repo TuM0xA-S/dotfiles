@@ -7,5 +7,5 @@ fi
 menu=$(mktemp)
 cat >$menu
 choice=$(mktemp)
-alacritty --class fzf-dmenu -o window.dimensions.columns=56 window.dimensions.lines=15 -e sh -c "fzf <$menu >$choice"
+alacritty --class fzf-dmenu -o window.dimensions.columns=64 window.dimensions.lines=18 -e sh -c "fzf <$menu >$choice"
 cat $choice 

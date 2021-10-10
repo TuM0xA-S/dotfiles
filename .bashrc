@@ -17,6 +17,9 @@ HISTFILESIZE=2000
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
+# cd without cd
+# shopt -s autocd
+
 # If set, the pattern "**" used in a pathname expansion context will
 # match all files and zero or more directories and subdirectories.
 #shopt -s globstar
@@ -59,6 +62,10 @@ alias kl="kcr list"
 alias kn="kcr env"
 alias kk="kcr kill"
 alias k="kak"
+alias kfm="kak -e 'files-new-browser'"
+
+alias usql="PAGER=kak usql"
+alias grpcurl="grpcurl -plaintext"
 
 dy() {
     pwd > $HOME/.wd
@@ -109,6 +116,7 @@ add_path() {
 export EDITOR=kak
 export VISUAL=kak
 # set -o vi
+export DELVE_EDITOR="kcr-edit"
 
 n ()
 {
@@ -183,3 +191,5 @@ dotfiles() {
 }
 alias dot=dotfiles
 
+export GOLANG_PROTOBUF_REGISTRATION_CONFLICT=warn
+export PGUSER=postgres
