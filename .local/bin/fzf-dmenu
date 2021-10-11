@@ -1,11 +1,7 @@
 #! /bin/bash
 
-if xdotool search --classname fzf-dmenu; then
-    exit
-fi
-
 menu=$(mktemp)
 cat >$menu
 choice=$(mktemp)
-alacritty --class fzf-dmenu -o window.dimensions.columns=64 window.dimensions.lines=18 -e sh -c "fzf <$menu >$choice"
+alacritty -e sh -c "fzf <$menu >$choice"
 cat $choice 

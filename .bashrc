@@ -62,7 +62,6 @@ alias kl="kcr list"
 alias kn="kcr env"
 alias kk="kcr kill"
 alias k="kak"
-alias kfm="kak -e 'files-new-browser'"
 
 alias usql="PAGER=kak usql"
 alias grpcurl="grpcurl -plaintext"
