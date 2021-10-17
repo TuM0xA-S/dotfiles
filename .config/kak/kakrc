@@ -230,6 +230,14 @@ alias global gt go-test
 map global normal @ q
 map global normal <a-@> Q
 
+declare-option -docstring 'find command' str find_command 'fd --type file'
+
+define-command -override find -menu -params 1 -shell-script-candidates %opt{find_command} -docstring 'open file' %{
+    edit %arg{1}
+}
+
+alias global f find
+
 define-command -override -docstring 'open history buffer' \
 hist %{
     e! -scratch '*hist*'
@@ -246,6 +254,12 @@ plug "raiguard/one.kak" theme defer %{
 }
 colorscheme one-dark
 
+define-command shell-eval %{
+    nop %sh{
+        eval "$kak_reg_dot"
+    }
+}
+
 hook global BufSetOption "filetype=%opt{files_browse_buffer}" %{
     map buffer normal '<ret>' ': files-cd<ret>'
     map buffer normal '<backspace>' ': files-cd-parent<ret>'
@@ -259,13 +273,13 @@ hook global BufSetOption "filetype=%opt{files_browse_buffer}" %{
 }
 
 hook global BufSetOption "filetype=%opt{files_selection_buffer}" %{
-    map buffer normal <ret> ': files-commit-operations<ret>'
+    map buffer normal <ret> ': shell-eval<ret>'
 }
 
 define-command -override connect -params .. -shell-completion %{
     nop %sh{
-        export KAK_SESSION=$kak_session
-        export KAK_CLIENT=$kak_client
+        export KAK_SESSION="$kak_session"
+        export KAK_CLIENT="$kak_client"
         setsid -f "$@" >/dev/null 2>&1
     }
 }
