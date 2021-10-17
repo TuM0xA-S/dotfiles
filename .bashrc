@@ -54,14 +54,7 @@ alias less="kak -ro"
 alias h="cd .."
 alias cdgr='cd $(git root)'
 alias g=git
-# kcr alias
-alias ke="kcr edit"
-alias ka="kcr attach"
-alias kc="kcr create"
-alias kl="kcr list"
-alias kn="kcr env"
-alias kk="kcr kill"
-alias k="kak"
+alias k=kak
 
 alias usql="PAGER=kak usql"
 alias grpcurl="grpcurl -plaintext"

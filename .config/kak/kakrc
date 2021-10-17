@@ -83,9 +83,9 @@ hook global WinSetOption filetype=yaml %{
     set window indentwidth 2
 }
 
-evaluate-commands %sh{
-    kcr init kakoune
-}
+# evaluate-commands %sh{
+#     kcr init kakoune
+# }
 
  
 add-highlighter -override global/ number-lines -hlcursor
@@ -262,10 +262,14 @@ hook global BufSetOption "filetype=%opt{files_selection_buffer}" %{
     map buffer normal <ret> ': files-commit-operations<ret>'
 }
 
-# define-command -override connect-terminal %{
-#     nop %sh{
-#         export KAK_CLIENT="$kak_client"
-#         export KAK_SESSION="$kak_session"
-#         setsid -f alacritty --working-directory $(pwd)
-#     }
-# }
+define-command -override connect -params .. -shell-completion %{
+    nop %sh{
+        export KAK_SESSION=$kak_session
+        export KAK_CLIENT=$kak_client
+        setsid -f "$@" >/dev/null 2>&1
+    }
+}
+
+define-command -override connect-terminal %{
+    connect %sh{echo $TERMINAL}
+}
