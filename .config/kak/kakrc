@@ -12,9 +12,8 @@ plug 'greenfork/active-window.kak' %{
 }
 
 plug "occivink/kakoune-sudo-write"
-plug "kak-lsp/kak-lsp" defer %{
-    set global lsp_completion_trigger ''
-}
+plug "kak-lsp/kak-lsp"
+
 plug 'https://gitlab.com/kstr0k/fast-context.kak' demand fast-context %{
     set-option global fast_context_max_width 120
     map global user -docstring 'show context' c ': fast-context-show<ret>'
@@ -22,6 +21,7 @@ plug 'https://gitlab.com/kstr0k/fast-context.kak' demand fast-context %{
 
 define-command -override lsp-engage -docstring 'Enable language server' %{
     lsp-enable-window
+    # set buffer lsp_completion_trigger ''
     map window normal -docstring 'lsp user mode' \' ': enter-user-mode lsp<ret>'
     map global goto m '<esc>: lsp-implementation<ret>' -docstring 'implementation'
     # remove-hooks window auto-signature-help
@@ -56,12 +56,22 @@ hook global WinSetOption filetype=go %{ # if any window has filetype go set
     hook window BufWritePre .* %{ # and use it before write
         format
     }
+    map buffer user -docstring 'send pos to debugger' 'o' ':godbg-send-pos<ret>'
 }
 
 hook global WinSetOption filetype=python %{
     lsp-engage
     set window indentwidth 4
-    set window formatcmd "autopep8 -"
+    set window formatcmd "yapf"
+    hook window BufWritePre .* %{
+        format
+    }
+}
+
+hook global WinSetOption filetype=c %{
+    lsp-engage
+    set window indentwidth 2
+    set window formatcmd "clang-format --style=Chromium"
     hook window BufWritePre .* %{
         format
     }
@@ -137,7 +147,9 @@ map global user -docstring "edit kakrc" k ':edit-kakrc<ret>'
 
 # hook global WinSetOption filetype=go "set buffer indentwidth 0"
 # hook global WinSetOption filetype=yaml "set buffer indentwidth 2"
-
+define-command -override source-kakrc %{
+    source "%val{config}/kakrc"
+}
 enable-auto-pairs
 map -docstring 'reload kakrc' global normal <F5> ':source-kakrc; echo reloaded kakrc<ret>'
 
@@ -254,7 +266,7 @@ plug "raiguard/one.kak" theme defer %{
 }
 colorscheme one-dark
 
-define-command shell-eval %{
+define-command -override shell-eval %{
     nop %sh{
         eval "$kak_reg_dot"
     }
@@ -286,4 +298,10 @@ define-command -override connect -params .. -shell-completion %{
 
 define-command -override connect-terminal %{
     connect %sh{echo $TERMINAL}
+}
+
+define-command -override godbg-send-pos %{
+    nop %sh{
+        echo -n "$kak_bufname:$kak_cursor_line" > .dbg_fifo_2
+    }
 }

@@ -1,5 +1,11 @@
 #!/bin/bash
-file="$1"
-line="$(echo "$2" | grep -Po '\d+')"
+
+if echo "$1" | grep -P '\+' &>/dev/null; then
+    line="$(echo "$1" | grep -oP '\d+')"
+    file="$2"
+else
+    line="$(echo "$2" | grep -oP '\d+')"
+    file="$1"
+fi
 
 echo "eval -client '$KAK_CLIENT' %{edit '$file' '$line'}" | kak -p "$KAK_SESSION"

@@ -44,10 +44,10 @@ alias grep='grep --color=auto'
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # some more ls aliases
-alias ll='ls -alF'
-alias la='ls -A'
+alias ll='ls -AlGF'
+alias la='ls -AF'
 alias l='ls -CF'
-alias l.='ls -d .[!.]*'
+alias l.='ls -dF .[!.]*'
 
 # use kak as pager
 alias less="kak -ro"
@@ -108,7 +108,7 @@ add_path() {
 export EDITOR=kak
 export VISUAL=kak
 # set -o vi
-export DELVE_EDITOR="kcr-edit"
+export DELVE_EDITOR="ke"
 
 n ()
 {

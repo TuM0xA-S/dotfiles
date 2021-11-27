@@ -1,5 +1,6 @@
 ~/.bashrc
 ~/.spectrwm.conf
+~/.spectrwm_keymap.conf
 ~/.config/qtile/config.py
 ~/.config/kak/kakrc
 ~/.config/broot/conf.toml

@@ -2,5 +2,5 @@
 .git
 .idea
 .vscode
-go
+~/go
 .cache
