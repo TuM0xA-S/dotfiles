@@ -161,7 +161,7 @@ fix() {
     stty sane
 }
 
-source /home/tum0xa/.config/broot/launcher/bash/br
+# source /home/tum0xa/.config/broot/launcher/bash/br
 export JQ_COLORS='0;31:0;39:0;39:0;39:0;32:1;39:1;39'
 
 case $- in *i*)
@@ -173,7 +173,7 @@ case $- in *i*)
     bind -x '"\t": fzf_bash_completion'
 
     bind -x '"\e[15~": reload'
-    source <(kubectl completion bash)
+#    source <(kubectl completion bash)
     source /usr/share/bash-completion/bash_completion
 ;; esac
 

@@ -17,7 +17,9 @@ plug "kak-lsp/kak-lsp"
 plug 'https://gitlab.com/kstr0k/fast-context.kak' demand fast-context %{
     set-option global fast_context_max_width 120
     map global user -docstring 'show context' c ': fast-context-show<ret>'
-} 
+}
+
+plug 'TuM0xA-S/files.kak'
 
 define-command -override lsp-engage -docstring 'Enable language server' %{
     lsp-enable-window
@@ -261,9 +263,7 @@ map global normal <c-w> ":db<ret>"
 set-option global files_show_hidden true
 # set-option global files_long_format true
 
-plug "raiguard/one.kak" theme defer %{
-    # one-enable-fancy-underlines
-}
+plug "raiguard/one.kak" theme
 colorscheme one-dark
 
 define-command -override shell-eval %{
