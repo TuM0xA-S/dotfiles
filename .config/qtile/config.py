@@ -155,7 +155,6 @@ screens = [
                 widget.Memory(),
                 widget.Net(interface="enp2s0"),
                 widget.PulseVolume(),
-                widget.BatteryIcon(),
                 widget.Clock(format="%Y-%m-%d %a %H:%M"),
                 # widget.Chord(
                 #     chords_colors={
