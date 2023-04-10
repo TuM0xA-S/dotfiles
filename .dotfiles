@@ -1,10 +1,11 @@
 ~/.bashrc
 ~/.spectrwm.conf
 ~/.spectrwm_keymap.conf
-~/.config/qtile/config.py
 ~/.config/kak/kakrc
 ~/.config/broot/conf.toml
 ~/.alacritty.yml
 ~/.dotfiles
 ~/.local/bin/baraction.sh
 ~/.gitconfig
+~/.config/qtile/config.py
+~/.config/helix/config.toml

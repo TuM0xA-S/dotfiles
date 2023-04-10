@@ -2,6 +2,10 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
+PATH="/home/tum0xa/.deno/bin/:/home/tum0xa/.cargo/bin:/home/tum0xa/go/bin:/home/tum0xa/bin:/home/tum0xa/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin"
+export NODE_PATH="$(npm root -g)"
+
+export GTK_THEME=Adwaita:dark
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
@@ -27,7 +31,7 @@ shopt -s checkwinsize
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-export TERMINAL=alacritty
+export TERMINAL=gnome-terminal
 
 . ~/.git-prompt.sh
 GIT_PS1_SHOWDIRTYSTATE=1
@@ -50,13 +54,14 @@ alias l='ls -CF'
 alias l.='ls -dF .[!.]*'
 
 # use kak as pager
-alias less="kak -ro"
+# alias less="kak -ro"
+
 alias h="cd .."
 alias cdgr='cd $(git root)'
 alias g=git
 alias k=kak
 
-alias usql="PAGER=kak usql"
+# alias usql="PAGER=kak usql"
 alias grpcurl="grpcurl -plaintext"
 
 dy() {
@@ -92,11 +97,11 @@ alias size='du -bsh'
 
 alias qtrans='trans -show-dictionary n -show-languages n -show-original n -show-prompt-message n -show-translation n'
 
-man () { kak -e "man $1"; }
+# man () { kak -e "man $1"; }
 
-export -f man
+# export -f man
 
-export MANPAGER=manpager.sh
+# export MANPAGER=manpager.sh
 
 add_path() {
     new_path="$1"
@@ -105,10 +110,12 @@ add_path() {
     fi
 }
 
-export EDITOR=kak
-export VISUAL=kak
+export EDITOR=vim
+export VISUAL=$EDITOR
 # set -o vi
-export DELVE_EDITOR="ke"
+export DELVE_EDITOR=$EDITOR
+export SUDO_EDITOR=$EDITOR
+
 
 n ()
 {
@@ -161,7 +168,7 @@ fix() {
     stty sane
 }
 
-source /home/tum0xa/.config/broot/launcher/bash/br
+# source /home/tum0xa/.config/broot/launcher/bash/br
 export JQ_COLORS='0;31:0;39:0;39:0;39:0;32:1;39:1;39'
 
 case $- in *i*)
@@ -169,19 +176,24 @@ case $- in *i*)
     bind -x '"\C-x\C-y":copyline'
 
     source $HOME/.fzf-bash-completion.sh
-    PROMPT_COMMAND="echo -ne \"\033]0;$(basename $0) "'$(smart_path.sh)'"\007\"; stty $(stty -g)"
+    PROMPT_COMMAND="echo -ne \"\033]0;$(basename $0) \007\"; stty $(stty -g)"
     bind -x '"\t": fzf_bash_completion'
 
     bind -x '"\e[15~": reload'
-    source <(kubectl completion bash)
+    # source <(kubectl completion bash)
     source /usr/share/bash-completion/bash_completion
 ;; esac
 
 dotfiles() {
-    local res="$(cat ~/.dotfiles | shell_fzf)"
-    [ -n "$res" ] && k $res
+    local res="$(cat ~/.dotfiles | shell_fzf | sed -e "s#~#$HOME#")"
+	[ -n "$res" ] && $EDITOR "$res"
 }
 alias dot=dotfiles
 
 export GOLANG_PROTOBUF_REGISTRATION_CONFLICT=warn
 export PGUSER=postgres
+
+dircolors /home/tum0xa/.dir_colors/dircolors &>/dev/null
+
+# eval "$(npm completion)"
+# source /home/tum0xa/.deno_completions
