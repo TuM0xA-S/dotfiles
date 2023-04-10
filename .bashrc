@@ -31,7 +31,7 @@ shopt -s checkwinsize
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-export TERMINAL=gnome-terminal
+export TERMINAL=alacritty
 
 . ~/.git-prompt.sh
 GIT_PS1_SHOWDIRTYSTATE=1
