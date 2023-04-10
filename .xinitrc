@@ -14,5 +14,5 @@ fi
 
 [ -f ~/.Xresources ] && xrdb -merge ~/.Xresources
 
-exec dbus-launch spectrwm
+exec qtile start
 

@@ -3,7 +3,7 @@
 # for examples
 
 PATH="/home/tum0xa/.deno/bin/:/home/tum0xa/.cargo/bin:/home/tum0xa/go/bin:/home/tum0xa/bin:/home/tum0xa/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin"
-export NODE_PATH="$(npm root -g)"
+# export NODE_PATH="$(npm root -g)"
 
 export GTK_THEME=Adwaita:dark
 # don't put duplicate lines or lines starting with space in the history.
@@ -176,7 +176,7 @@ case $- in *i*)
     bind -x '"\C-x\C-y":copyline'
 
     source $HOME/.fzf-bash-completion.sh
-    PROMPT_COMMAND="echo -ne \"\033]0;$(basename $0) \007\"; stty $(stty -g)"
+    # PROMPT_COMMAND="echo -ne \"\033]0;$(basename $0) \007\"; stty $(stty -g)"
     bind -x '"\t": fzf_bash_completion'
 
     bind -x '"\e[15~": reload'
