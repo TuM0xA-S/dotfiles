@@ -1,3 +1,5 @@
-setxkbmap -option "caps:escape,terminate:ctrl_alt_bksp"
-# setxkbmap -option "caps:escape,grp:toggle,terminate:ctrl_alt_bksp" -layout "us,ru" -variant ","
+setxkbmap -option "caps:escape,terminate:ctrl_alt_bksp" # -layout "us,ru" -variant ","
+# layout commented because qtile does it on its own with widget
+# this stuff does layout changing not needed cause of qtile too
+# grp:toggle,
 
